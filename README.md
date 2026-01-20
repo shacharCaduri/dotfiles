@@ -13,12 +13,12 @@ dotfiles/
 │   ├── install-zsh        # Zsh installation script
 │   ├── .zshrc             # Zsh configuration
 │   ├── .p10k.zsh          # Powerlevel10k prompt configuration
-│   └── USAGE.md           # Detailed usage guide
+│   └── README.md           # Detailed usage guide
 │
 └── git/                   # Git-related configurations
     ├── git-env-setup      # Git environment setup script
     ├── .gitconfig         # Git configuration template
-    └── USAGE.md           # Detailed usage guide
+    └── README.md           # Detailed usage guide
 ```
 
 ## 🚀 Quick Start
