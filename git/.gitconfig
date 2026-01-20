@@ -1,0 +1,112 @@
+[user]
+    # Replace these with your actual name and email
+    name = Your Name
+    email = your.email@example.com
+
+[core]
+    # Global gitignore
+    excludesfile = ~/.gitignore_global
+    
+    # Better diff handling for non-ASCII characters
+    quotepath = false
+    
+    # Use VS Code as default editor
+    editor = code --wait
+
+[alias]
+    # Simplified Shortcuts
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    
+    # Advanced Navigation and History
+    # Show branches in a nice, graphical log
+    tree = log --graph --decorate --pretty=oneline --abbrev-commit
+    
+    # Show last commit
+    last = log -1 HEAD
+    
+    # Powerful Workflow Aliases
+    # Switch to a branch, pull latest, then switch back
+    sync = "!f() { \
+        current=$(git symbolic-ref --short HEAD); \
+        git checkout $1; \
+        git pull; \
+        git checkout $current; \
+    }; f"
+    
+    # Interactive rebase of last N commits
+    recommit = "!f() { git rebase -i HEAD~$1; }; f"
+    
+    # Undo last commit, keeping changes
+    oops = reset HEAD~1 --mixed
+    
+    # Quick commit with message
+    cm = "!f() { git commit -m \"$1\"; }; f"
+    
+    # Amend last commit without changing message
+    amend = commit --amend --no-edit
+    
+    # Delete all merged branches except main/master
+    cleanup = "!git branch --merged | egrep -v \"(^\\*|master|main)\" | xargs git branch -d"
+    
+    # Show commits in a range
+    range = "!f() { git log $1..$2; }; f"
+    
+    # Find branches containing commit
+    find-branch = "!f() { git branch -a --contains $1; }; f"
+    
+    # Advanced Diff and Patch Aliases
+    # Show changes that are staged
+    staged = diff --staged
+    
+    # Diff with word-level changes
+    wdiff = diff --word-diff
+    
+    # Patch generation
+    patch = !git --no-pager diff --no-color
+    
+    # Contribution and Review Helpers
+    # List contributors by number of commits
+    contributors = shortlog -sn
+    
+    # Show files modified in last commit
+    files = diff-tree --no-commit-id --name-only -r HEAD
+
+[pull]
+    # Automatically rebase instead of merge on pull
+    rebase = true
+
+[push]
+    # Simplify pushing current branch
+    default = current
+
+[diff]
+    # Detect copies as well as renames
+    renames = copies
+
+[help]
+    # Automatically correct and run mistyped commands
+    autocorrect = 1
+
+[color]
+    # Enable colorful output
+    ui = auto
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    commit = green bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = red
