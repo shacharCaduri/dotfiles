@@ -1,7 +1,7 @@
 [user]
-    # Replace these with your actual name and email
-    name = Your Name
-    email = your.email@example.com
+    # Use environment variables for name and email
+    name = $GIT_USER_NAME
+    email = $GIT_USER_EMAIL
 
 [core]
     # Global gitignore
@@ -10,8 +10,8 @@
     # Better diff handling for non-ASCII characters
     quotepath = false
     
-    # Use VS Code as default editor
-    editor = code --wait
+    # Use VS Code as default editor, fallback to environment variable or vim
+    editor = ${GIT_EDITOR:-code --wait}
 
 [alias]
     # Simplified Shortcuts
@@ -31,13 +31,13 @@
     # Switch to a branch, pull latest, then switch back
     sync = "!f() { \
         current=$(git symbolic-ref --short HEAD); \
-        git checkout $1; \
+        git checkout ${1:-${GIT_DEFAULT_BRANCH:-main}}; \
         git pull; \
         git checkout $current; \
     }; f"
     
     # Interactive rebase of last N commits
-    recommit = "!f() { git rebase -i HEAD~$1; }; f"
+    recommit = "!f() { git rebase -i HEAD~${1:-1}; }; f"
     
     # Undo last commit, keeping changes
     oops = reset HEAD~1 --mixed
@@ -49,7 +49,7 @@
     amend = commit --amend --no-edit
     
     # Delete all merged branches except main/master
-    cleanup = "!git branch --merged | egrep -v \"(^\\*|master|main)\" | xargs git branch -d"
+    cleanup = "!git branch --merged | egrep -v \"(^\\*|${GIT_MAIN_BRANCH:-main}|${GIT_MASTER_BRANCH:-master})\" | xargs git branch -d"
     
     # Show commits in a range
     range = "!f() { git log $1..$2; }; f"
@@ -76,37 +76,37 @@
 
 [pull]
     # Automatically rebase instead of merge on pull
-    rebase = true
+    rebase = ${GIT_PULL_REBASE:-true}
 
 [push]
     # Simplify pushing current branch
-    default = current
+    default = ${GIT_PUSH_DEFAULT:-current}
 
 [diff]
     # Detect copies as well as renames
-    renames = copies
+    renames = ${GIT_DIFF_RENAMES:-copies}
 
 [help]
     # Automatically correct and run mistyped commands
-    autocorrect = 1
+    autocorrect = ${GIT_HELP_AUTOCORRECT:-1}
 
 [color]
     # Enable colorful output
-    ui = auto
+    ui = ${GIT_COLOR_UI:-auto}
 
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
+    current = ${GIT_COLOR_BRANCH_CURRENT:-yellow reverse}
+    local = ${GIT_COLOR_BRANCH_LOCAL:-yellow}
+    remote = ${GIT_COLOR_BRANCH_REMOTE:-green}
 
 [color "diff"]
-    meta = yellow bold
-    commit = green bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
+    meta = ${GIT_COLOR_DIFF_META:-yellow bold}
+    commit = ${GIT_COLOR_DIFF_COMMIT:-green bold}
+    frag = ${GIT_COLOR_DIFF_FRAG:-magenta bold}
+    old = ${GIT_COLOR_DIFF_OLD:-red bold}
+    new = ${GIT_COLOR_DIFF_NEW:-green bold}
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = red
+    added = ${GIT_COLOR_STATUS_ADDED:-yellow}
+    changed = ${GIT_COLOR_STATUS_CHANGED:-green}
+    untracked = ${GIT_COLOR_STATUS_UNTRACKED:-red}
